@@ -28,12 +28,10 @@ export UBUNTU_MENUPROXY=0
 # ** Init BASEDIR                                 **
 # **************************************************
 
-BASEDIR=`dirname $0`
-cd $BASEDIR
-DIR=`pwd`
-cd -
+BASEDIR=`dirname "$0"`
+cd "$BASEDIR"
 
-. "$DIR/set-pentaho-env.sh"
+. ./set-pentaho-env.sh
 
 setPentahoEnv
 
@@ -42,37 +40,37 @@ setPentahoEnv
 # **************************************************
 
 LIBPATH="NONE"
-STARTUP="$DIR/launcher/launcher.jar"
+STARTUP="launcher/pentaho-application-launcher-5.2.0.0-181.jar"
 
-case `uname -s` in 
+case `uname -s` in
 	AIX)
 	ARCH=`uname -m`
 		case $ARCH in
 
 			ppc)
-				LIBPATH=$BASEDIR/../libswt/aix/
+				LIBPATH=libswt/aix/
 				;;
 
 			ppc64)
-				LIBPATH=$BASEDIR/../libswt/aix64/
+				LIBPATH=libswt/aix64/
 				;;
 
-			*)	
+			*)
 				echo "I'm sorry, this AIX platform [$ARCH] is not yet supported!"
 				exit
 				;;
 		esac
 		;;
-	SunOS) 
+	SunOS)
 	ARCH=`uname -m`
 		case $ARCH in
 
 			i[3-6]86)
-				LIBPATH=$BASEDIR/../libswt/solaris-x86/
+				LIBPATH=libswt/solaris-x86/
 				;;
 
-			*)	
-				LIBPATH=$BASEDIR/../libswt/solaris/
+			*)
+				LIBPATH=libswt/solaris/
 				;;
 		esac
 		;;
@@ -82,19 +80,19 @@ case `uname -s` in
 	OPT="-XstartOnFirstThread $OPT"
 	case $ARCH in
 		x86_64)
-			if $($_PENTAHO_JAVA -version 2>&1 | grep "64-Bit" > /dev/null )
+			if $("$_PENTAHO_JAVA" -version 2>&1 | grep "64-Bit" > /dev/null )
                             then
-			  LIBPATH=$BASEDIR/../libswt/osx64/
+			  LIBPATH=libswt/osx64/
                             else
-			  LIBPATH=$BASEDIR/../libswt/osx/
+			  LIBPATH=libswt/osx/
                             fi
 			;;
 
 		i[3-6]86)
-			LIBPATH=$BASEDIR/../libswt/osx/
+			LIBPATH=libswt/osx/
 			;;
 
-		*)	
+		*)
 			echo "I'm sorry, this Mac platform [$ARCH] is not yet supported!"
 			echo "Please try starting using 'Data Integration 32-bit' or"
 			echo "'Data Integration 64-bit' as appropriate."
@@ -108,27 +106,27 @@ case `uname -s` in
 	    ARCH=`uname -m`
 		case $ARCH in
 			x86_64)
-				if $($_PENTAHO_JAVA -version 2>&1 | grep "64-Bit" > /dev/null )
+				if $("$_PENTAHO_JAVA" -version 2>&1 | grep "64-Bit" > /dev/null )
                                 then
-				  LIBPATH=$BASEDIR/../libswt/linux/x86_64/
+				  LIBPATH=libswt/linux/x86_64/
                                 else
-				  LIBPATH=$BASEDIR/../libswt/linux/x86/
+				  LIBPATH=libswt/linux/x86/
                                 fi
 				;;
 
 			i[3-6]86)
-				LIBPATH=$BASEDIR/../libswt/linux/x86/
+				LIBPATH=libswt/linux/x86/
 				;;
 
 			ppc)
-				LIBPATH=$BASEDIR/../libswt/linux/ppc/
+				LIBPATH=libswt/linux/ppc/
 				;;
 
 			ppc64)
-				LIBPATH=$BASEDIR/../libswt/linux/ppc64/
+				LIBPATH=libswt/linux/ppc64/
 				;;
 
-			*)	
+			*)
 				echo "I'm sorry, this Linux platform [$ARCH] is not yet supported!"
 				exit
 				;;
@@ -141,41 +139,41 @@ case `uname -s` in
 	    ARCH=`uname -m`
 		case $ARCH in
 			x86_64)
-				LIBPATH=$BASEDIR/../libswt/linux/x86_64/
+				LIBPATH=libswt/linux/x86_64/
 				echo "I'm sorry, this FreeBSD platform [$ARCH] is not yet supported!"
 				exit
 				;;
 
 			i[3-6]86)
-				LIBPATH=$BASEDIR/../libswt/linux/x86/
+				LIBPATH=libswt/linux/x86/
 				;;
 
 			ppc)
-				LIBPATH=$BASEDIR/../libswt/linux/ppc/
+				LIBPATH=libswt/linux/ppc/
 				echo "I'm sorry, this FreeBSD platform [$ARCH] is not yet supported!"
 				exit
 				;;
 
-			*)	
+			*)
 				echo "I'm sorry, this FreeBSD platform [$ARCH] is not yet supported!"
 				exit
 				;;
 		esac
 		;;
 
-	HP-UX) 
-		LIBPATH=$BASEDIR/../libswt/hpux/
+	HP-UX)
+		LIBPATH=libswt/hpux/
 		;;
 	CYGWIN*)
 		./Spoon.bat
 		exit
 		;;
 
-	*) 
+	*)
 		echo Spoon is not supported on this hosttype : `uname -s`
 		exit
 		;;
-esac 
+esac
 
 export LIBPATH
 
@@ -197,4 +195,4 @@ OPT="$OPT $PENTAHO_DI_JAVA_OPTIONS -Djava.library.path=$LIBPATH -DKETTLE_HOME=$K
 # ***************
 # ** Run...    **
 # ***************
-"$_PENTAHO_JAVA" $OPT -jar "$STARTUP" -lib $LIBPATH "${1+$@}"
+"$_PENTAHO_JAVA" $OPT -jar "$STARTUP" -lib "./../$LIBPATH" "${1+$@}"

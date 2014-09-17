@@ -1,9 +1,7 @@
 #!/bin/sh
 
-BASEDIR="`dirname $0`"
+BASEDIR="`dirname "$0"`"
 cd "$BASEDIR"
-DIR="`pwd`"
-cd - > /dev/null
 
 if [ "$1" = "-x" ]; then
   set LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BASEDIR/lib
@@ -12,4 +10,4 @@ if [ "$1" = "-x" ]; then
   shift
 fi
 
-"$DIR/spoon.sh" -main org.pentaho.di.kitchen.Kitchen "$@"
+"./spoon.sh" -main org.pentaho.di.kitchen.Kitchen "$@"
