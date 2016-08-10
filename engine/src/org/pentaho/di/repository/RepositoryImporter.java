@@ -45,6 +45,8 @@ import org.pentaho.di.core.exception.KettleException;
 import org.pentaho.di.core.exception.KettleMissingPluginsException;
 import org.pentaho.di.core.exception.KettleXMLException;
 import org.pentaho.di.core.exception.LookupReferencesException;
+import org.pentaho.di.core.extension.ExtensionPointHandler;
+import org.pentaho.di.core.extension.KettleExtensionPoint;
 import org.pentaho.di.core.gui.HasOverwritePrompter;
 import org.pentaho.di.core.gui.OverwritePrompter;
 import org.pentaho.di.core.gui.SpoonFactory;
@@ -739,7 +741,7 @@ public class RepositoryImporter implements IRepositoryImporter, CanLimitDirs {
           referencingObjects.add( new RepositoryObject( transMeta.getObjectId(), transMeta.getName(), transMeta
               .getRepositoryDirectory(), null, null, RepositoryObjectType.TRANSFORMATION, null, false ) );
         }
-
+        ExtensionPointHandler.callExtensionPoint( log, KettleExtensionPoint.TransAfterImport.id, new Object[] { transMeta, rep } );
       } catch ( Exception e ) {
         feedback.addLog( BaseMessages.getString( PKG, "RepositoryImporter.ErrorSavingTrans.Log", Integer
             .toString( transformationNumber ), transMeta.getName(), Const.getStackTracker( e ) ) );

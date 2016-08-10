@@ -52,6 +52,7 @@ public enum KettleExtensionPoint {
     TransGraphMouseDoubleClick( "TransGraphMouseDoubleClick",
       "A left or right button was double-clicked in a transformation" ),
     TransBeforeDeleteSteps( "TransBeforeDeleteSteps", "Transformation steps about to be deleted" ),
+    TransAfterImport( "TransAfterImport", "Transformation was saved into repository" ),
     SpoonTransMetaExecutionStart( "SpoonTransMetaExecutionStart",
       "Spoon initiates the execution of a trans (TransMeta)" ),
     SpoonTransExecutionConfiguration( "SpoonTransExecutionConfiguration",
